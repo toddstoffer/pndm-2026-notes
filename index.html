@@ -1,0 +1,1421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>PNDM 2026 — TAM Guide</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500&display=swap');
+
+:root {
+  --pink: #FF2D78;
+  --dark: #0F0F14;
+  --card: #16161E;
+  --border: #2A2A38;
+  --text: #E8E8F0;
+  --muted: #888899;
+  --gold: #FFD166;
+  --teal: #06D6A0;
+  --blue: #4EA8DE;
+  --purple: #a078ff;
+  --pad: 14px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html { font-size: 16px; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--dark);
+  color: var(--text);
+  min-height: 100vh;
+  padding-bottom: 80px;
+}
+
+/* ── HEADER ── */
+header {
+  background: #0F0F14;
+  border-bottom: 1px solid var(--border);
+  padding: 14px var(--pad);
+  position: sticky;
+  top: 0;
+  z-index: 200;
+}
+
+.header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.logo h1 {
+  font-family: 'Syne', sans-serif;
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: -0.3px;
+  line-height: 1;
+}
+.logo h1 span { color: var(--pink); }
+.logo p { font-size: 11px; color: var(--muted); margin-top: 3px; }
+
+/* Quick-find */
+.qf-wrap { position: relative; flex: 1; max-width: 260px; }
+
+.qf-input-row {
+  display: flex;
+  align-items: center;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 9px 12px;
+  gap: 8px;
+}
+
+.qf-input-row input {
+  background: none;
+  border: none;
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  outline: none;
+  width: 100%;
+  min-width: 0;
+}
+.qf-input-row input::placeholder { color: var(--muted); font-size: 13px; }
+
+.qf-dropdown {
+  background: #1c1c28;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.6);
+  display: none;
+  left: 0; right: 0;
+  max-height: 60vh;
+  overflow-y: auto;
+  position: absolute;
+  top: calc(100% + 6px);
+  z-index: 300;
+}
+.qf-dropdown.open { display: block; }
+
+.qf-item {
+  align-items: center;
+  border-bottom: 1px solid rgba(42,42,56,0.5);
+  cursor: pointer;
+  display: flex;
+  gap: 10px;
+  padding: 12px 14px;
+  transition: background 0.1s;
+}
+.qf-item:last-child { border-bottom: none; }
+.qf-item:hover, .qf-item.focused { background: rgba(255,45,120,0.08); }
+
+.qf-av {
+  align-items: center;
+  border-radius: 50%;
+  display: flex;
+  flex-shrink: 0;
+  font-family: 'Syne', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  height: 34px;
+  justify-content: center;
+  width: 34px;
+}
+
+.qf-info { flex: 1; min-width: 0; }
+.qf-name { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.qf-sub { color: var(--muted); font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 1px; }
+.qf-has-note { font-size: 14px; flex-shrink: 0; }
+.qf-empty { color: var(--muted); font-size: 13px; padding: 18px 14px; text-align: center; }
+
+/* ── COMPANY FILTER PILLS ── */
+.filter-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding: 0 var(--pad);
+  margin-top: 10px;
+}
+.filter-wrap::-webkit-scrollbar { display: none; }
+
+.filter-inner {
+  display: flex;
+  gap: 7px;
+  width: max-content;
+  padding-bottom: 2px;
+}
+
+.fpill {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  color: var(--muted);
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  padding: 6px 13px;
+  white-space: nowrap;
+  transition: all 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+.fpill:hover, .fpill.active {
+  border-color: var(--pink);
+  color: var(--pink);
+  background: rgba(255,45,120,0.08);
+}
+
+/* Legend */
+.legend {
+  display: flex;
+  gap: 14px;
+  padding: 8px var(--pad) 0;
+  font-size: 11px;
+  color: var(--muted);
+  flex-wrap: wrap;
+}
+
+/* ── PAGE CONTENT ── */
+.page { max-width: 680px; margin: 0 auto; padding: 16px var(--pad) 0; }
+
+/* ── SECTION LABEL ── */
+.sec-label {
+  font-family: 'Syne', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--pink);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.sec-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+/* ── SPEAKER CARDS ── */
+.speaker-card {
+  background: linear-gradient(135deg, rgba(255,45,120,0.07) 0%, var(--card) 100%);
+  border: 1px solid rgba(255,45,120,0.25);
+  border-radius: 12px;
+  padding: 14px;
+  margin-bottom: 10px;
+}
+
+.spk-badge {
+  display: inline-block;
+  background: var(--pink);
+  color: white;
+  font-family: 'Syne', sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 3px 9px;
+  border-radius: 20px;
+  margin-bottom: 8px;
+}
+
+.spk-name { font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 700; }
+.spk-role { font-size: 12px; color: var(--muted); margin-top: 2px; margin-bottom: 8px; }
+.spk-session { font-size: 13px; font-weight: 500; color: var(--gold); margin-bottom: 6px; }
+.spk-chips { display: flex; gap: 10px; flex-wrap: wrap; }
+.spk-chip { font-size: 11px; color: var(--muted); display: flex; align-items: center; gap: 4px; }
+.spk-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--teal); }
+
+/* ── COMPANY GROUP ── */
+.company-group { margin-bottom: 20px; }
+
+.co-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+  padding: 0 2px;
+}
+.co-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+.co-name { font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700; }
+.co-count { font-size: 11px; color: var(--muted); background: var(--border); border-radius: 10px; padding: 2px 8px; }
+
+/* ── ATTENDEE CARD ── */
+.attendee-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  margin-bottom: 7px;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+.attendee-card.hidden { display: none; }
+
+.card-main {
+  display: grid;
+  grid-template-columns: 40px 1fr auto;
+  gap: 10px;
+  align-items: center;
+  padding: 12px 12px 12px 12px;
+}
+
+.av {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Syne', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.card-info { min-width: 0; }
+.card-name {
+  font-family: 'Syne', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.2;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+.card-title { font-size: 11px; color: var(--muted); margin-top: 2px; line-height: 1.3; }
+
+.card-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 5px;
+  flex-shrink: 0;
+}
+
+.note-btn {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 15px;
+  line-height: 1;
+  padding: 5px 8px;
+  transition: all 0.15s;
+  min-width: 36px;
+  min-height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.note-btn:hover { background: rgba(255,255,255,0.05); border-color: #3a3a55; }
+.note-btn.has-note { color: var(--gold); border-color: rgba(255,209,102,0.4); }
+
+.pendo-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  justify-content: flex-end;
+}
+.ptag {
+  font-size: 9px;
+  padding: 2px 6px;
+  border-radius: 6px;
+  border: 1px solid;
+  white-space: nowrap;
+}
+.pt-analytics { background: rgba(78,168,222,0.1); color: var(--blue); border-color: rgba(78,168,222,0.3); }
+.pt-guides    { background: rgba(255,209,102,0.1); color: var(--gold); border-color: rgba(255,209,102,0.3); }
+.pt-nps       { background: rgba(6,214,160,0.1); color: var(--teal); border-color: rgba(6,214,160,0.3); }
+.pt-roadmaps  { background: rgba(255,45,120,0.1); color: var(--pink); border-color: rgba(255,45,120,0.3); }
+.pt-listen    { background: rgba(160,120,255,0.1); color: var(--purple); border-color: rgba(160,120,255,0.3); }
+.pt-ai        { background: rgba(255,150,50,0.1); color: #ff9632; border-color: rgba(255,150,50,0.3); }
+
+/* ── NOTE PREVIEW ── */
+.note-preview {
+  font-size: 11px;
+  color: #7878a0;
+  font-style: italic;
+  padding: 0 12px 8px 62px;
+  cursor: pointer;
+  line-height: 1.4;
+  border-top: none;
+}
+.note-preview:hover { color: var(--text); }
+
+/* ── NOTE EDITOR ── */
+.notes-row { display: none; border-top: 1px solid var(--border); padding: 12px; }
+.notes-row.open { display: block; }
+
+.notes-row textarea {
+  background: #0d0d12;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  outline: none;
+  padding: 10px 12px;
+  resize: none;
+  width: 100%;
+  min-height: 80px;
+  transition: border-color 0.15s;
+  -webkit-appearance: none;
+}
+.notes-row textarea:focus { border-color: #3a3a55; }
+.notes-row textarea::placeholder { color: #444455; }
+
+.note-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.btn-save {
+  background: var(--pink);
+  border: none;
+  border-radius: 7px;
+  color: white;
+  cursor: pointer;
+  font-family: 'Syne', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 9px 18px;
+  min-height: 38px;
+  transition: opacity 0.15s;
+  flex-shrink: 0;
+}
+.btn-save:disabled { opacity: 0.4; }
+.btn-save:hover:not(:disabled) { opacity: 0.85; }
+
+.btn-cancel {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  color: var(--muted);
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  padding: 9px 14px;
+  min-height: 38px;
+  transition: all 0.15s;
+}
+.btn-cancel:hover { border-color: #3a3a55; color: var(--text); }
+
+.saved-msg {
+  font-size: 11px;
+  color: var(--teal);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.saved-msg.show { opacity: 1; }
+
+/* ── COMPANY COLOUR CLASSES ── */
+.c-zelis   { background: rgba(255,45,120,0.15); color: var(--pink); }
+.c-mcgraw  { background: rgba(78,168,222,0.15); color: var(--blue); }
+.c-coxauto { background: rgba(255,209,102,0.15); color: var(--gold); }
+.c-coxcomm { background: rgba(6,214,160,0.15); color: var(--teal); }
+.c-fidelity{ background: rgba(160,120,255,0.15); color: var(--purple); }
+
+.d-zelis   { background: var(--pink); }
+.d-mcgraw  { background: var(--blue); }
+.d-coxauto { background: var(--gold); }
+.d-coxcomm { background: var(--teal); }
+.d-fidelity{ background: var(--purple); }
+
+/* ── SLACK SECTION ── */
+.slack-sec { margin-top: 24px; }
+
+.slack-row {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  margin-bottom: 8px;
+  overflow: hidden;
+}
+
+.slack-top {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+  align-items: center;
+  padding: 13px 13px 10px;
+}
+
+.slack-co { font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700; }
+.slack-ch { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+.slack-bottom {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 13px 13px;
+}
+
+.slack-count {
+  font-size: 11px;
+  color: var(--muted);
+  background: var(--border);
+  border-radius: 10px;
+  padding: 3px 9px;
+  white-space: nowrap;
+  flex: 1;
+}
+.slack-count.has { background: rgba(6,214,160,0.12); color: var(--teal); }
+
+.btn-slack {
+  background: #4A154B;
+  border: none;
+  border-radius: 7px;
+  color: white;
+  cursor: pointer;
+  font-family: 'Syne', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  padding: 9px 14px;
+  min-height: 36px;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: opacity 0.15s;
+  flex-shrink: 0;
+}
+.btn-slack:hover:not(:disabled) { opacity: 0.85; }
+.btn-slack:disabled { opacity: 0.35; cursor: default; }
+.btn-slack.sent { background: #1a7a4a; }
+
+.slack-log {
+  display: none;
+  padding: 0 13px 12px;
+  border-top: 1px solid var(--border);
+}
+.slack-log.open { display: block; padding-top: 10px; }
+.log-line { font-size: 11px; color: var(--muted); padding: 2px 0; }
+.log-line.done  { color: var(--teal); }
+.log-line.error { color: #ff6b6b; }
+
+/* ── SPEAKER BADGE IN CARD NAME ── */
+.spk-inline {
+  font-size: 9px;
+  background: rgba(255,45,120,0.15);
+  color: var(--pink);
+  padding: 2px 6px;
+  border-radius: 6px;
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  flex-shrink: 0;
+}
+
+.no-results {
+  color: var(--muted);
+  font-size: 13px;
+  padding: 30px;
+  text-align: center;
+  display: none;
+}
+
+/* ── SLACK ICON SVG PATH ── */
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="header-top">
+    <div class="logo">
+      <h1>PNDM <span>2026</span></h1>
+      <p>Todd Stoffer · March 24–26 · Raleigh, NC · 62 attendees</p>
+    </div>
+    <div class="qf-wrap" id="qfWrap">
+      <div class="qf-input-row">
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><circle cx="6.5" cy="6.5" r="5.5" stroke="#888899" stroke-width="1.5"/><path d="M11 11L14 14" stroke="#888899" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <input id="qfInput" type="text" placeholder="Find &amp; add notes…" autocomplete="off"
+          oninput="onQF(this.value)" onfocus="onQF(this.value)" onkeydown="onQFKey(event)">
+      </div>
+      <div class="qf-dropdown" id="qfDrop"></div>
+    </div>
+  </div>
+
+  <div class="filter-wrap">
+    <div class="filter-inner">
+      <button class="fpill active" onclick="filterCo('all',this)">All</button>
+      <button class="fpill" onclick="filterCo('sapphire',this)">Zelis</button>
+      <button class="fpill" onclick="filterCo('mcgraw',this)">McGraw Hill</button>
+      <button class="fpill" onclick="filterCo('cox-auto',this)">Cox Auto</button>
+      <button class="fpill" onclick="filterCo('cox-comm',this)">Cox Comm</button>
+      <button class="fpill" onclick="filterCo('fidelity',this)">Fidelity</button>
+    </div>
+  </div>
+
+  <div class="legend">
+    <span>🤝 Met in past year</span>
+    <span>✨ First meeting</span>
+  </div>
+</header>
+
+<div class="page">
+
+<!-- SPEAKERS -->
+<div style="margin-bottom:20px">
+  <div class="sec-label">🎤 Your Speakers</div>
+
+  <div class="speaker-card">
+    <div class="spk-badge">SPEAKER</div>
+    <div class="spk-name">Jen Bessette</div>
+    <div class="spk-role">Product Management Operations Manager · McGraw Hill LLC</div>
+    <div class="spk-session">⚡ Lightning Round: Making product insights actionable at scale</div>
+    <div class="spk-chips">
+      <span class="spk-chip"><span class="spk-dot"></span>March 26, Day 2</span>
+      <span class="spk-chip">📍 Memorial Hall</span>
+      <span class="spk-chip">🕐 1:30–2:15 PM</span>
+    </div>
+  </div>
+
+  <div class="speaker-card">
+    <div class="spk-badge">SPEAKER</div>
+    <div class="spk-name">Kendall Pavey</div>
+    <div class="spk-role">CX Product Marketing Manager · Cox Automotive</div>
+    <div class="spk-session">⚡ Lightning Round: Messaging that powers product-led growth</div>
+    <div class="spk-chips">
+      <span class="spk-chip"><span class="spk-dot"></span>March 26, Day 2</span>
+      <span class="spk-chip">📍 Meymandi Hall</span>
+      <span class="spk-chip">🕐 2:30–3:15 PM</span>
+    </div>
+  </div>
+</div>
+
+<!-- ATTENDEES -->
+<div class="sec-label">👥 All Attendees</div>
+<div id="noResults" class="no-results">No attendees match.</div>
+
+<!-- SAPPHIRE / ZELIS -->
+<div class="company-group" data-group="sapphire">
+  <div class="co-header">
+    <div class="co-dot d-zelis"></div>
+    <span class="co-name">Sapphire Digital / Zelis</span>
+    <span class="co-count">9</span>
+  </div>
+  <div>
+
+    <div class="attendee-card" data-company="sapphire" data-search="suzi mirchel analytics sapphire zelis">
+      <div class="card-main">
+        <div class="av c-zelis">SM</div>
+        <div class="card-info">
+          <div class="card-name">Suzi Mirchel <span>🤝</span></div>
+          <div class="card-title">Senior Manager, Product Analytics & Insights</div>
+        </div>
+        <div class="card-right">
+          <button class="note-btn" title="Add note">📝</button>
+          <div class="pendo-tags"><span class="ptag pt-analytics">Analytics</span><span class="ptag pt-nps">NPS</span></div>
+        </div>
+      </div>
+      <div class="notes-row"><textarea placeholder="Conversation notes…" rows="3"></textarea><div class="note-actions"><button class="btn-save" onclick="saveNote(this)">Save</button><button class="btn-cancel" onclick="closeNote(this)">Cancel</button><span class="saved-msg">✓ Saved</span></div></div>
+    </div>
+
+    <div class="attendee-card" data-company="sapphire" data-search="sandrine daly designer sapphire zelis">
+      <div class="card-main">
+        <div class="av c-zelis">SD</div>
+        <div class="card-info">
+          <div class="card-name">Sandrine Daly <span>✨</span></div>
+          <div class="card-title">Product Designer</div>
+        </div>
+        <div class="card-right">
+          <button class="note-btn" title="Add note">📝</button>
+          <div class="pendo-tags"><span class="ptag pt-guides">Guides</span></div>
+        </div>
+      </div>
+      <div class="notes-row"><textarea placeholder="Conversation notes…" rows="3"></textarea><div class="note-actions"><button class="btn-save" onclick="saveNote(this)">Save</button><button class="btn-cancel" onclick="closeNote(this)">Cancel</button><span class="saved-msg">✓ Saved</span></div></div>
+    </div>
+
+    <div class="attendee-card" data-company="sapphire" data-search="alida wilson-thorbes design manager sapphire zelis">
+      <div class="card-main">
+        <div class="av c-zelis">AW</div>
+        <div class="card-info">
+          <div class="card-name">Alida Thorbes <span>✨</span></div>
+          <div class="card-title">Experience Design Manager</div>
+        </div>
+        <div class="card-right">
+          <button class="note-btn" title="Add note">📝</button>
+          <div class="pendo-tags"><span class="ptag pt-guides">Guides</span><span class="ptag pt-analytics">Analytics</span></div>
+        </div>
+      </div>
+      <div class="notes-row"><textarea placeholder="Conversation notes…" rows="3"></textarea><div class="note-actions"><button class="btn-save" onclick="saveNote(this)">Save</button><button class="btn-cancel" onclick="closeNote(this)">Cancel</button><span class="saved-msg">✓ Saved</span></div></div>
+    </div>
+
+    <div class="attendee-card" data-company="sapphire" data-search="rousseau kluever analytics manager sapphire zelis">
+      <div class="card-main">
+        <div class="av c-zelis">RK</div>
+        <div class="card-info">
+          <div class="card-name">Rousseau Kluever <span>✨</span></div>
+          <div class="card-title">Senior Product Analytics & Insights Manager</div>
+        </div>
+        <div class="card-right">
+          <button class="note-btn" title="Add note">📝</button>
+          <div class="pendo-tags"><span class="ptag pt-analytics">Analytics</span><span class="ptag pt-nps">NPS</span></div>
+        </div>
+      </div>
+      <div class="notes-row"><textarea placeholder="Conversation notes…" rows="3"></textarea><div class="note-actions"><button class="btn-save" onclick="saveNote(this)">Save</button><button class="btn-cancel" onclick="closeNote(this)">Cancel</button><span class="saved-msg">✓ Saved</span></div></div>
+    </div>
+
+    <div class="attendee-card" data-company="sapphire" data-search="amanda bujnak product manager sapphire zelis">
+      <div class="card-main">
+        <div class="av c-zelis">AB</div>
+        <div class="card-info">
+          <div class="card-name">Amanda Bujnak <span>✨</span></div>
+          <div class="card-title">Sr. Product Manager</div>
+        </div>
+        <div class="card-right">
+          <button class="note-btn" title="Add note">📝</button>
+          <div class="pendo-tags"><span class="ptag pt-analytics">Analytics</span><span class="ptag pt-guides">Guides</span></div>
+        </div>
+      </div>
+      <div class="notes-row"><textarea placeholder="Conversation notes…" rows="3"></textarea><div class="note-actions"><button class="btn-save" onclick="saveNote(this)">Save</button><button class="btn-cancel" onclick="closeNote(this)">Cancel</button><span class="saved-msg">✓ Saved</span></div></div>
+    </div>
+
+    <div class="attendee-card" data-company="sapphire" data-search="allison hoerler designer sapphire">
+      <div class="card-main">
+        <div class="av c-zelis">AH</div>
+        <div class="card-info">
+          <div class="card-name">Allison Hoerler <span>✨</span></div>
+          <div class="card-title">Product Designer</div>
+        </div>
+        <div class="card-right">
+          <button class="note-btn" title="Add note">📝</button>
+          <div class="pendo-tags"><span class="ptag pt-guides">Guides</span></div>
+        </div>
+      </div>
+      <div class="notes-row"><textarea placeholder="Conversation notes…" rows="3"></textarea><div class="note-actions"><button class="btn-save" onclick="saveNote(this)">Save</button><button class="btn-cancel" onclick="closeNote(this)">Cancel</button><span class="saved-msg">✓ Saved</span></div></div>
+    </div>
+
+    <div class="attendee-card" data-company="sapphire" data-search="gina gould product ops sapphire zelis">
+      <div class="card-main">
+        <div class="av c-zelis">GG</div>
+        <div class="card-info">
+          <div class="card-name">Gina Gould <span>✨</span></div>
+          <div class="card-title">Sr. Product Ops Manager</div>
+        </div>
+        <div class="card-right">
+          <button class="note-btn" title="Add note">📝</button>
+          <div class="pendo-tags"><span class="ptag pt-analytics">Analytics</span><span class="ptag pt-roadmaps">Roadmaps</span></div>
+        </div>
+      </div>
+      <div class="notes-row"><textarea placeholder="Conversation notes…" rows="3"></textarea><div class="note-actions"><button class="btn-save" onclick="saveNote(this)">Save</button><button class="btn-cancel" onclick="closeNote(this)">Cancel</button><span class="saved-msg">✓ Saved</span></div></div>
+    </div>
+
+    <div class="attendee-card" data-company="sapphire" data-search="jenny sweis design director sapphire zelis">
+      <div class="card-main">
+        <div class="av c-zelis">JS</div>
+        <div class="card-info">
+          <div class="card-name">Jenny Sweis <span>✨</span></div>
+          <div class="card-title">Product Experience Design Director</div>
+        </div>
+        <div class="card-right">
+          <button class="note-btn" title="Add note">📝</button>
+          <div class="pendo-tags"><span class="ptag pt-guides">Guides</span><span class="ptag pt-analytics">Analytics</span></div>
+        </div>
+      </div>
+      <div class="notes-row"><textarea placeholder="Conversation notes…" rows="3"></textarea><div class="note-actions"><button class="btn-save" onclick="saveNote(this)">Save</button><button class="btn-cancel" onclick="closeNote(this)">Cancel</button><span class="saved-msg">✓ Saved</span></div></div>
+    </div>
+
+    <div class="attendee-card" data-company="sapphire" data-search="toria mangum learning admin sapphire zelis">
+      <div class="card-main">
+        <div class="av c-zelis">TM</div>
+        <div class="card-info">
+          <div class="card-name">Toria Mangum <span>✨</span></div>
+          <div class="card-title">Payments Learning, Program Admin</div>
+        </div>
+        <div class="card-right">
+          <button class="note-btn" title="Add note">📝</button>
+          <div class="pendo-tags"><span class="ptag pt-guides">Guides</span></div>
+        </div>
+      </div>
+      <div class="notes-row"><textarea placeholder="Conversation notes…" rows="3"></textarea><div class="note-actions"><button class="btn-save" onclick="saveNote(this)">Save</button><button class="btn-cancel" onclick="closeNote(this)">Cancel</button><span class="saved-msg">✓ Saved</span></div></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- McGRAW HILL -->
+<div class="company-group" data-group="mcgraw">
+  <div class="co-header">
+    <div class="co-dot d-mcgraw"></div>
+    <span class="co-name">McGraw Hill LLC</span>
+    <span class="co-count">12 · 1 speaker</span>
+  </div>
+  <div>
+
+    <div class="attendee-card" data-company="mcgraw" data-search="jen bessette product operations mcgraw hill speaker">
+      <div class="card-main">
+        <div class="av c-mcgraw">JB</div>
+        <div class="card-info">
+          <div class="card-name">Jen Bessette 🤝 <span class="spk-inline">SPEAKER</span></div>
+          <div class="card-title">Product Management Operations Manager · Speaking March 26 @ 1:30 PM</div>
+        </div>
+        <div class="card-right">
+          <button class="note-btn" title="Add note">📝</button>
+          <div class="pendo-tags"><span class="ptag pt-analytics">Analytics</span><span class="ptag pt-roadmaps">Roadmaps</span></div>
+        </div>
+      </div>
+      <div class="notes-row"><textarea placeholder="Conversation notes…" rows="3"></textarea><div class="note-actions"><button class="btn-save" onclick="saveNote(this)">Save</button><button class="btn-cancel" onclick="closeNote(this)">Cancel</button><span class="saved-msg">✓ Saved</span></div></div>
+    </div>
+
+    <div class="attendee-card" data-company="mcgraw" data-search="rhiannon wong director product management mcgraw hill">
+      <div class="card-main"><div class="av c-mcgraw">RW</div><div class="card-info"><div class="card-name">Rhiannon Wong 🤝</div><div class="card-title">Associate Director, Product Management</div></div><div class="card-right"><button class="note-btn">📝</button><div class="pendo-tags"><span class="ptag pt-analytics">Analytics</span><span class="ptag pt-guides">Guides</span></div></div></div>
+      <div class="notes-row"><textarea placeholder="Conversation notes…" rows="3"></textarea><div class="note-actions"><button class="btn-save" onclick="saveNote(this)">Save</button><button class="btn-cancel" onclick="closeNote(this)">Cancel</button><span class="saved-msg">✓ Saved</span></div></div>
+    </div>
+
+    <div class="attendee-card" data-company="mcgraw" data-search="maria maxell data analytics mcgraw hill">
+      <div class="card-main"><div class="av c-mcgraw">MM</div><div class="card-info"><div class="card-name">Maria Maxell 🤝</div><div class="card-title">Senior Manager, Data and Analytics</div></div><div class="card-right"><button class="note-btn">📝</button><div class="pendo-tags"><span class="ptag pt-analytics">Analytics</span><span class="ptag pt-nps">NPS</span></div></div></div>
+      <div class="notes-row"><textarea placeholder="Conversation notes…" rows="3"></textarea><div class="note-actions"><button class="btn-save" onclick="saveNote(this)">Save</button><button class="btn-cancel" onclick="closeNote(this)">Cancel</button><span class="saved-msg">✓ Saved</span></div></div>
+    </div>
+
+    <div class="attendee-card" data-company="mcgraw" data-search="bailey anderson product owner data mcgraw hill">
+      <div class="card-main"><div class="av c-mcgraw">BA</div><div class="card-info"><div class="card-name">Bailey Anderson 🤝</div><div class="card-title">Sr. Product Owner – Data</div></div><div class="card-right"><button class="note-btn">📝</button><div class="pendo-tags"><span class="ptag pt-analytics">Analytics</span></div></div></div>
+      <div class="notes-row"><textarea placeholder="Conversation notes…" rows="3"></textarea><div class="note-actions"><button class="btn-save" onclick="saveNote(this)">Save</button><button class="btn-cancel" onclick="closeNote(this)">Cancel</button><span class="saved-msg">✓ Saved</span></div></div>
+    </div>
+
+    <div class="attendee-card" data-company="mcgraw" data-search="robert kenyon principal technical product manager mcgraw hill">
+      <div class="card-main"><div class="av c-mcgraw">RK</div><div class="card-info"><div class="card-name">Robert Kenyon 🤝</div><div class="card-title">Principal Technical Product Manager</div></div><div class="card-right"><button class="note-btn">📝</button><div class="pendo-tags"><span class="ptag pt-analytics">Analytics</span><span class="ptag pt-guides">Guides</span></div></div></div>
+      <div class="notes-row"><textarea placeholder="Conversation notes…" rows="3"></textarea><div class="note-actions"><button class="btn-save" onclick="saveNote(this)">Save</button><button class="btn-cancel" onclick="closeNote(this)">Cancel</button><span class="saved-msg">✓ Saved</span></div></div>
+    </div>
+
+    <div class="attendee-card" data-company="mcgraw" data-search="jacob wolfe associate product manager mcgraw hill">
+      <div class="card-main"><div class="av c-mcgraw">JW</div><div class="card-info"><div class="card-name">Jacob Wolfe 🤝</div><div class="card-title">Associate Product Manager</div></div><div class="card-right"><button class="note-btn">📝</button><div class="pendo-tags"><span class="ptag pt-guides">Guides</span></div></div></div>
+      <div class="notes-row"><textarea placeholder="Conversation notes…" rows="3"></textarea><div class="note-actions"><button class="btn-save" onclick="saveNote(this)">Save</button><button class="btn-cancel" onclick="closeNote(this)">Cancel</button><span class="saved-msg">✓ Saved</span></div></div>
+    </div>
+
+    <div class="attendee-card" data-company="mcgraw" data-search="amber king product manager mcgraw hill">
+      <div class="card-main"><div class="av c-mcgraw">AK</div><div class="card-info"><div class="card-name">Amber King 🤝</div><div class="card-title">Product Manager</div></div><div class="card-right"><button class="note-btn">📝</button><div class="pendo-tags"><span class="ptag pt-analytics">Analytics</span><span class="ptag pt-guides">Guides</span></div></div></div>
+      <div class="notes-row"><textarea placeholder="Conversation notes…" rows="3"></textarea><div class="note-actions"><button class="btn-save" onclick="saveNote(this)">Save</button><button class="btn-cancel" onclick="closeNote(this)">Cancel</button><span class="saved-msg">✓ Saved</span></div></div>
+    </div>
+
+    <div class="attendee-card" data-company="mcgraw" data-search="andy trus technical product manager mcgraw hill">
+      <div class="card-main"><div class="av c-mcgraw">AT</div><div class="card-info"><div class="card-name">Andy Trus ✨</div><div class="card-title">Sr. Product Manager</div></div><div class="card-right"><button class="note-btn">📝</button><div class="pendo-tags"><span class="ptag pt-analytics">Analytics</span></div></div></div>
+      <div class="notes-row"><textarea placeholder="Conversation notes…" rows="3"></textarea><div class="note-actions"><button class="btn-save" onclick="saveNote(this)">Save</button><button class="btn-cancel" onclick="closeNote(this)">Cancel</button><span class="saved-msg">✓ Saved</span></div></div>
+    </div>
+
+    <div class="attendee-card" data-company="mcgraw" data-search="michael mitchell technical product manager mcgraw hill">
+      <div class="card-main"><div class="av c-mcgraw">MM</div><div class="card-info"><div class="card-name">Michael Mitchell 🤝</div><div class="card-title">Sr. Technical Product Manager</div></div><div class="card-right"><button class="note-btn">📝</button><div class="pendo-tags"><span class="ptag pt-analytics">Analytics</span><span class="ptag pt-guides">Guides</span></div></div></div>
+      <div class="notes-row"><textarea placeholder="Conversation notes…" rows="3"></textarea><div class="note-actions"><button class="btn-save" onclick="saveNote(this)">Save</button><button class="btn-cancel" onclick="closeNote(this)">Cancel</button><span class="saved-msg">✓ Saved</span></div></div>
+    </div>
+
+    <div class="attendee-card" data-company="mcgraw" data-search="jessica galloway program manager mcgraw hill">
+      <div class="card-main"><div class="av c-mcgraw">JG</div><div class="card-info"><div class="card-name">Jessica Galloway ✨</div><div class="card-title">Sr. Program Manager</div></div><div class="card-right"><button class="note-btn">📝</button><div class="pendo-tags"><span class="ptag pt-analytics">Analytics</span></div></div></div>
+      <div class="notes-row"><textarea placeholder="Conversation notes…" rows="3"></textarea><div class="note-actions"><button class="btn-save" onclick="saveNote(this)">Save</button><button class="btn-cancel" onclick="closeNote(this)">Cancel</button><span class="saved-msg">✓ Saved</span></div></div>
+    </div>
+
+
+    <div class="attendee-card" data-company="mcgraw" data-search="emily jones product manager mcgraw hill">
+      <div class="card-main"><div class="av c-mcgraw">EJ</div><div class="card-info"><div class="card-name">Emily Jones ✨</div><div class="card-title">Product Manager</div></div><div class="card-right"><button class="note-btn">📝</button><div class="pendo-tags"><span class="ptag pt-analytics">Analytics</span><span class="ptag pt-guides">Guides</span></div></div></div>
+      <div class="notes-row"><textarea placeholder="Conversation notes…" rows="3"></textarea><div class="note-actions"><button class="btn-save" onclick="saveNote(this)">Save</button><button class="btn-cancel" onclick="closeNote(this)">Cancel</button><span class="saved-msg">✓ Saved</span></div></div>
+    </div>
+
+    <div class="attendee-card" data-company="mcgraw" data-search="lior raz-farley product operations mcgraw hill">
+      <div class="card-main"><div class="av c-mcgraw">LR</div><div class="card-info"><div class="card-name">Lior Raz-Farley 🤝</div><div class="card-title">Associate Product Operations Manager</div></div><div class="card-right"><button class="note-btn">📝</button><div class="pendo-tags"><span class="ptag pt-roadmaps">Roadmaps</span><span class="ptag pt-analytics">Analytics</span></div></div></div>
+      <div class="notes-row"><textarea placeholder="Conversation notes…" rows="3"></textarea><div class="note-actions"><button class="btn-save" onclick="saveNote(this)">Save</button><button class="btn-cancel" onclick="closeNote(this)">Cancel</button><span class="saved-msg">✓ Saved</span></div></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- COX AUTOMOTIVE -->
+<div class="company-group" data-group="cox-auto">
+  <div class="co-header">
+    <div class="co-dot d-coxauto"></div>
+    <span class="co-name">Cox Automotive</span>
+    <span class="co-count">27 · 1 speaker</span>
+  </div>
+  <div>
+
+    <div class="attendee-card" data-company="cox-auto" data-search="kendall pavey product marketing cox automotive speaker">
+      <div class="card-main"><div class="av c-coxauto">KP</div><div class="card-info"><div class="card-name">Kendall Pavey 🤝 <span class="spk-inline">SPEAKER</span></div><div class="card-title">CX Product Marketing Manager · Speaking March 26 @ 2:30 PM</div></div><div class="card-right"><button class="note-btn">📝</button><div class="pendo-tags"><span class="ptag pt-guides">Guides</span><span class="ptag pt-analytics">Analytics</span></div></div></div>
+      <div class="notes-row"><textarea placeholder="Conversation notes…" rows="3"></textarea><div class="note-actions"><button class="btn-save" onclick="saveNote(this)">Save</button><button class="btn-cancel" onclick="closeNote(this)">Cancel</button><span class="saved-msg">✓ Saved</span></div></div>
+    </div>
+
+    <div class="attendee-card" data-company="cox-auto" data-search="mathi tamilmani financial analyst cox automotive">
+      <div class="card-main"><div class="av c-coxauto">MT</div><div class="card-info"><div class="card-name">Mathi Tamilmani 🤝</div><div class="card-title">Financial Senior Analyst</div></div><div class="card-right"><button class="note-btn">📝</button><div class="pendo-tags"><span class="ptag pt-analytics">Analytics</span></div></div></div>
+      <div class="notes-row"><textarea placeholder="Conversation notes…" rows="3"></textarea><div class="note-actions"><button class="btn-save" onclick="saveNote(this)">Save</button><button class="btn-cancel" onclick="closeNote(this)">Cancel</button><span class="saved-msg">✓ Saved</span></div></div>
+    </div>
+
+    <div class="attendee-card" data-company="cox-auto" data-search="katy fransen principal ux architect cox automotive">
+      <div class="card-main"><div class="av c-coxauto">KF</div><div class="card-info"><div class="card-name">Katy Fransen 🤝</div><div class="card-title">Principal UX Architect</div></div><div class="card-right"><button class="note-btn">📝</button><div class="pendo-tags"><span class="ptag pt-guides">Guides</span><span class="ptag pt-analytics">Analytics</span></div></div></div>
+      <div class="notes-row"><textarea placeholder="Conversation notes…" rows="3"></textarea><div class="note-actions"><button class="btn-save" onclick="saveNote(this)">Save</button><button class="btn-cancel" onclick="closeNote(this)">Cancel</button><span class="saved-msg">✓ Saved</span></div></div>
+    </div>
+
+    <div class="attendee-card" data-company="cox-auto" data-search="chuck konfrst director user experience cox automotive">
+      <div class="card-main"><div class="av c-coxauto">CK</div><div class="card-info"><div class="card-name">Chuck Konfrst 🤝</div><div class="card-title">Director, User Experience</div></div><div class="card-right"><button class="note-btn">📝</button><div class="pendo-tags"><span class="ptag pt-analytics">Analytics</span><span class="ptag pt-nps">NPS</span></div></div></div>
+      <div class="notes-row"><textarea placeholder="Conversation notes…" rows="3"></textarea><div class="note-actions"><button class="btn-save" onclick="saveNote(this)">Save</button><button class="btn-cancel" onclick="closeNote(this)">Cancel</button><span class="saved-msg">✓ Saved</span></div></div>
+    </div>
+
+    <div class="attendee-card" data-company="cox-auto" data-search="jeff volzer ux director cox automotive">
+      <div class="card-main"><div class="av c-coxauto">JV</div><div class="card-info"><div class="card-name">Jeff Volzer 🤝</div><div class="card-title">UX Director</div></div><div class="card-right"><button class="note-btn">📝</button><div class="pendo-tags"><span class="ptag pt-analytics">Analytics</span><span class="ptag pt-guides">Guides</span></div></div></div>
+      <div class="notes-row"><textarea placeholder="Conversation notes…" rows="3"></textarea><div class="note-actions"><button class="btn-save" onclick="saveNote(this)">Save</button><button class="btn-cancel" onclick="closeNote(this)">Cancel</button><span class="saved-msg">✓ Saved</span></div></div>
+    </div>
+
+    <div class="attendee-card" data-company="cox-auto" data-search="derek rich ux designer cox automotive">
+      <div class="card-main"><div class="av c-coxauto">DR</div><div class="card-info"><div class="card-name">Derek Rich 🤝</div><div class="card-title">UX Designer</div></div><div class="card-right"><button class="note-btn">📝</button><div class="pendo-tags"><span class="ptag pt-guides">Guides</span></div></div></div>
+      <div class="notes-row"><textarea placeholder="Conversation notes…" rows="3"></textarea><div class="note-actions"><button class="btn-save" onclick="saveNote(this)">Save</button><button class="btn-cancel" onclick="closeNote(this)">Cancel</button><span class="saved-msg">✓ Saved</span></div></div>
+    </div>
+
+    <div class="attendee-card" data-company="cox-auto" data-search="mike sauce ux manager cox automotive">
+      <div class="card-main"><div class="av c-coxauto">MS</div><div class="card-info"><div class="card-name">Mike Sauce 🤝</div><div class="card-title">Sr. UX Manager</div></div><div class="card-right"><button class="note-btn">📝</button><div class="pendo-tags"><span class="ptag pt-analytics">Analytics</span><span class="ptag pt-guides">Guides</span></div></div></div>
+      <div class="notes-row"><textarea placeholder="Conversation notes…" rows="3"></textarea><div class="note-actions"><button class="btn-save" onclick="saveNote(this)">Save</button><button class="btn-cancel" onclick="closeNote(this)">Cancel</button><span class="saved-msg">✓ Saved</span></div></div>
+    </div>
+
+    <div class="attendee-card" data-company="cox-auto" data-search="andrea gilman senior product manager cox automotive">
+      <div class="card-main"><div class="av c-coxauto">AG</div><div class="card-info"><div class="card-name">Andrea Gilman 🤝</div><div class="card-title">Senior Product Manager</div></div><div class="card-right"><button class="note-btn">📝</button><div class="pendo-tags"><span class="ptag pt-analytics">Analytics</span><span class="ptag pt-roadmaps">Roadmaps</span></div></div></div>
+      <div class="notes-row"><textarea placeholder="Conversation notes…" rows="3"></textarea><div class="note-actions"><button class="btn-save" onclick="saveNote(this)">Save</button><button class="btn-cancel" onclick="closeNote(this)">Cancel</button><span class="saved-msg">✓ Saved</span></div></div>
+    </div>
+
+    <div class="attendee-card" data-company="cox-auto" data-search="caroline oles sr director product operations cox automotive">
+      <div class="card-main"><div class="av c-coxauto">CO</div><div class="card-info"><div class="card-name">Caroline Oles 🤝</div><div class="card-title">Sr. Director, Product Operations</div></div><div class="card-right"><button class="note-btn">📝</button><div class="pendo-tags"><span class="ptag pt-analytics">Analytics</span><span class="ptag pt-roadmaps">Roadmaps</span><span class="ptag pt-listen">Listen</span></div></div></div>
+      <div class="notes-row"><textarea placeholder="Conversation notes…" rows="3"></textarea><div class="note-actions"><button class="btn-save" onclick="saveNote(this)">Save</button><button class="btn-cancel" onclick="closeNote(this)">Cancel</button><span class="saved-msg">✓ Saved</span></div></div>
+    </div>
+
+    <div class="attendee-card" data-company="cox-auto" data-search="lexi gavin sales strategy enablement cox automotive">
+      <div class="card-main"><div class="av c-coxauto">LG</div><div class="card-info"><div class="card-name">Lexi Gavin 🤝</div><div class="card-title">Sales Strategy & Enablement Manager</div></div><div class="card-right"><button class="note-btn">📝</button><div class="pendo-tags"><span class="ptag pt-guides">Guides</span><span class="ptag pt-analytics">Analytics</span></div></div></div>
+      <div class="notes-row"><textarea placeholder="Conversation notes…" rows="3"></textarea><div class="note-actions"><button class="btn-save" onclick="saveNote(this)">Save</button><button class="btn-cancel" onclick="closeNote(this)">Cancel</button><span class="saved-msg">✓ Saved</span></div></div>
+    </div>
+
+    <div class="attendee-card" data-company="cox-auto" data-search="kimmi manilal ux architect cox automotive">
+      <div class="card-main"><div class="av c-coxauto">KM</div><div class="card-info"><div class="card-name">Kimmi Manilal ✨</div><div class="card-title">UX Architect 2</div></div><div class="card-right"><button class="note-btn">📝</button><div class="pendo-tags"><span class="ptag pt-guides">Guides</span></div></div></div>
+      <div class="notes-row"><textarea placeholder="Conversation notes…" rows="3"></textarea><div class="note-actions"><button class="btn-save" onclick="saveNote(this)">Save</button><button class="btn-cancel" onclick="closeNote(this)">Cancel</button><span class="saved-msg">✓ Saved</span></div></div>
+    </div>
+
+    <div class="attendee-card" data-company="cox-auto" data-search="lindsey helms business process analyst cox automotive">
+      <div class="card-main"><div class="av c-coxauto">LH</div><div class="card-info"><div class="card-name">Lindsey Helms ✨</div><div class="card-title">Business Process Design & Improvement Sr. Analyst</div></div><div class="card-right"><button class="note-btn">📝</button><div class="pendo-tags"><span class="ptag pt-analytics">Analytics</span></div></div></div>
+      <div class="notes-row"><textarea placeholder="Conversation notes…" rows="3"></textarea><div class="note-actions"><button class="btn-save" onclick="saveNote(this)">Save</button><button class="btn-cancel" onclick="closeNote(this)">Cancel</button><span class="saved-msg">✓ Saved</span></div></div>
+    </div>
+
+    <div class="attendee-card" data-company="cox-auto" data-search="melisa lombardo sales strategy analyst cox automotive">
+      <div class="card-main"><div class="av c-coxauto">ML</div><div class="card-info"><div class="card-name">Melisa Lombardo 🤝</div><div class="card-title">Sales Strategy & Enablement Sr. Analyst</div></div><div class="card-right"><button class="note-btn">📝</button><div class="pendo-tags"><span class="ptag pt-guides">Guides</span><span class="ptag pt-analytics">Analytics</span></div></div></div>
+      <div class="notes-row"><textarea placeholder="Conversation notes…" rows="3"></textarea><div class="note-actions"><button class="btn-save" onclick="saveNote(this)">Save</button><button class="btn-cancel" onclick="closeNote(this)">Cancel</button><span class="saved-msg">✓ Saved</span></div></div>
+    </div>
+
+    <div class="attendee-card" data-company="cox-auto" data-search="wade burris product manager cox automotive">
+      <div class="card-main"><div class="av c-coxauto">WB</div><div class="card-info"><div class="card-name">Wade Burris ✨</div><div class="card-title">Product Manager</div></div><div class="card-right"><button class="note-btn">📝</button><div class="pendo-tags"><span class="ptag pt-analytics">Analytics</span><span class="ptag pt-guides">Guides</span></div></div></div>
+      <div class="notes-row"><textarea placeholder="Conversation notes…" rows="3"></textarea><div class="note-actions"><button class="btn-save" onclick="saveNote(this)">Save</button><button class="btn-cancel" onclick="closeNote(this)">Cancel</button><span class="saved-msg">✓ Saved</span></div></div>
+    </div>
+
+    <div class="attendee-card" data-company="cox-auto" data-search="jeff cherry ux design manager cox automotive">
+      <div class="card-main"><div class="av c-coxauto">JC</div><div class="card-info"><div class="card-name">Jeff Cherry 🤝</div><div class="card-title">Sr. Manager, UX Design</div></div><div class="card-right"><button class="note-btn">📝</button><div class="pendo-tags"><span class="ptag pt-guides">Guides</span><span class="ptag pt-analytics">Analytics</span></div></div></div>
+      <div class="notes-row"><textarea placeholder="Conversation notes…" rows="3"></textarea><div class="note-actions"><button class="btn-save" onclick="saveNote(this)">Save</button><button class="btn-cancel" onclick="closeNote(this)">Cancel</button><span class="saved-msg">✓ Saved</span></div></div>
+    </div>
+
+    <div class="attendee-card" data-company="cox-auto" data-search="craig combel ux design director cox automotive">
+      <div class="card-main"><div class="av c-coxauto">CC</div><div class="card-info"><div class="card-name">Craig Combel 🤝</div><div class="card-title">Sr. Director, UX Design</div></div><div class="card-right"><button class="note-btn">📝</button><div class="pendo-tags"><span class="ptag pt-analytics">Analytics</span><span class="ptag pt-nps">NPS</span></div></div></div>
+      <div class="notes-row"><textarea placeholder="Conversation notes…" rows="3"></textarea><div class="note-actions"><button class="btn-save" onclick="saveNote(this)">Save</button><button class="btn-cancel" onclick="closeNote(this)">Cancel</button><span class="saved-msg">✓ Saved</span></div></div>
+    </div>
+
+    <div class="attendee-card" data-company="cox-auto" data-search="fran rossetti product marketing director cox automotive">
+      <div class="card-main"><div class="av c-coxauto">FR</div><div class="card-info"><div class="card-name">Fran Rossetti 🤝</div><div class="card-title">Director of Product Marketing</div></div><div class="card-right"><button class="note-btn">📝</button><div class="pendo-tags"><span class="ptag pt-guides">Guides</span><span class="ptag pt-analytics">Analytics</span></div></div></div>
+      <div class="notes-row"><textarea placeholder="Conversation notes…" rows="3"></textarea><div class="note-actions"><button class="btn-save" onclick="saveNote(this)">Save</button><button class="btn-cancel" onclick="closeNote(this)">Cancel</button><span class="saved-msg">✓ Saved</span></div></div>
+    </div>
+
+    <div class="attendee-card" data-company="cox-auto" data-search="caitlin erickson senior ux architect cox automotive">
+      <div class="card-main"><div class="av c-coxauto">CE</div><div class="card-info"><div class="card-name">Caitlin Erickson 🤝</div><div class="card-title">Senior UX Architect</div></div><div class="card-right"><button class="note-btn">📝</button><div class="pendo-tags"><span class="ptag pt-guides">Guides</span></div></div></div>
+      <div class="notes-row"><textarea placeholder="Conversation notes…" rows="3"></textarea><div class="note-actions"><button class="btn-save" onclick="saveNote(this)">Save</button><button class="btn-cancel" onclick="closeNote(this)">Cancel</button><span class="saved-msg">✓ Saved</span></div></div>
+    </div>
+
+    <div class="attendee-card" data-company="cox-auto" data-search="connor toon product owner cox automotive">
+      <div class="card-main"><div class="av c-coxauto">CT</div><div class="card-info"><div class="card-name">Connor Toon ✨</div><div class="card-title">Product Owner</div></div><div class="card-right"><button class="note-btn">📝</button><div class="pendo-tags"><span class="ptag pt-analytics">Analytics</span></div></div></div>
+      <div class="notes-row"><textarea placeholder="Conversation notes…" rows="3"></textarea><div class="note-actions"><button class="btn-save" onclick="saveNote(this)">Save</button><button class="btn-cancel" onclick="closeNote(this)">Cancel</button><span class="saved-msg">✓ Saved</span></div></div>
+    </div>
+
+    <div class="attendee-card" data-company="cox-auto" data-search="chris lyght product manager cox automotive">
+      <div class="card-main"><div class="av c-coxauto">CL</div><div class="card-info"><div class="card-name">Chris Lyght 🤝</div><div class="card-title">Product Manager</div></div><div class="card-right"><button class="note-btn">📝</button><div class="pendo-tags"><span class="ptag pt-analytics">Analytics</span><span class="ptag pt-guides">Guides</span></div></div></div>
+      <div class="notes-row"><textarea placeholder="Conversation notes…" rows="3"></textarea><div class="note-actions"><button class="btn-save" onclick="saveNote(this)">Save</button><button class="btn-cancel" onclick="closeNote(this)">Cancel</button><span class="saved-msg">✓ Saved</span></div></div>
+    </div>
+
+    <div class="attendee-card" data-company="cox-auto" data-search="whitney vorwerk ux architect cox automotive">
+      <div class="card-main"><div class="av c-coxauto">WV</div><div class="card-info"><div class="card-name">Whitney Vorwerk 🤝</div><div class="card-title">Sr. UX Architect</div></div><div class="card-right"><button class="note-btn">📝</button><div class="pendo-tags"><span class="ptag pt-guides">Guides</span><span class="ptag pt-analytics">Analytics</span></div></div></div>
+      <div class="notes-row"><textarea placeholder="Conversation notes…" rows="3"></textarea><div class="note-actions"><button class="btn-save" onclick="saveNote(this)">Save</button><button class="btn-cancel" onclick="closeNote(this)">Cancel</button><span class="saved-msg">✓ Saved</span></div></div>
+    </div>
+
+    <div class="attendee-card" data-company="cox-auto" data-search="blake weishaar director product management cox automotive">
+      <div class="card-main"><div class="av c-coxauto">BW</div><div class="card-info"><div class="card-name">Blake Weishaar 🤝</div><div class="card-title">Director, Product Management</div></div><div class="card-right"><button class="note-btn">📝</button><div class="pendo-tags"><span class="ptag pt-analytics">Analytics</span><span class="ptag pt-roadmaps">Roadmaps</span></div></div></div>
+      <div class="notes-row"><textarea placeholder="Conversation notes…" rows="3"></textarea><div class="note-actions"><button class="btn-save" onclick="saveNote(this)">Save</button><button class="btn-cancel" onclick="closeNote(this)">Cancel</button><span class="saved-msg">✓ Saved</span></div></div>
+    </div>
+
+
+    <div class="attendee-card" data-company="cox-auto" data-search="matt newton director product management cox automotive">
+      <div class="card-main"><div class="av c-coxauto">MN</div><div class="card-info"><div class="card-name">Matt Newton ✨</div><div class="card-title">Director, Product Management</div></div><div class="card-right"><button class="note-btn">📝</button><div class="pendo-tags"><span class="ptag pt-analytics">Analytics</span><span class="ptag pt-roadmaps">Roadmaps</span></div></div></div>
+      <div class="notes-row"><textarea placeholder="Conversation notes…" rows="3"></textarea><div class="note-actions"><button class="btn-save" onclick="saveNote(this)">Save</button><button class="btn-cancel" onclick="closeNote(this)">Cancel</button><span class="saved-msg">✓ Saved</span></div></div>
+    </div>
+
+    <div class="attendee-card" data-company="cox-auto" data-search="joseph collura product marketing manager cox automotive">
+      <div class="card-main"><div class="av c-coxauto">JC</div><div class="card-info"><div class="card-name">Joseph Collura 🤝</div><div class="card-title">Sr. Product Marketing Manager</div></div><div class="card-right"><button class="note-btn">📝</button><div class="pendo-tags"><span class="ptag pt-guides">Guides</span><span class="ptag pt-analytics">Analytics</span></div></div></div>
+      <div class="notes-row"><textarea placeholder="Conversation notes…" rows="3"></textarea><div class="note-actions"><button class="btn-save" onclick="saveNote(this)">Save</button><button class="btn-cancel" onclick="closeNote(this)">Cancel</button><span class="saved-msg">✓ Saved</span></div></div>
+    </div>
+
+    <div class="attendee-card" data-company="cox-auto" data-search="jennifer heater ux researcher cox automotive">
+      <div class="card-main"><div class="av c-coxauto">JH</div><div class="card-info"><div class="card-name">Jennifer Heater 🤝</div><div class="card-title">Sr. UX Researcher</div></div><div class="card-right"><button class="note-btn">📝</button><div class="pendo-tags"><span class="ptag pt-listen">Listen</span><span class="ptag pt-analytics">Analytics</span></div></div></div>
+      <div class="notes-row"><textarea placeholder="Conversation notes…" rows="3"></textarea><div class="note-actions"><button class="btn-save" onclick="saveNote(this)">Save</button><button class="btn-cancel" onclick="closeNote(this)">Cancel</button><span class="saved-msg">✓ Saved</span></div></div>
+    </div>
+
+    <div class="attendee-card" data-company="cox-auto" data-search="emily kelly product success manager cox automotive">
+      <div class="card-main"><div class="av c-coxauto">EK</div><div class="card-info"><div class="card-name">Emily Kelly 🤝</div><div class="card-title">Sr. Product Success Manager</div></div><div class="card-right"><button class="note-btn">📝</button><div class="pendo-tags"><span class="ptag pt-nps">NPS</span><span class="ptag pt-analytics">Analytics</span></div></div></div>
+      <div class="notes-row"><textarea placeholder="Conversation notes…" rows="3"></textarea><div class="note-actions"><button class="btn-save" onclick="saveNote(this)">Save</button><button class="btn-cancel" onclick="closeNote(this)">Cancel</button><span class="saved-msg">✓ Saved</span></div></div>
+    </div>
+
+    <div class="attendee-card" data-company="cox-auto" data-search="michael mckennedy senior product management cox automotive">
+      <div class="card-main"><div class="av c-coxauto">MM</div><div class="card-info"><div class="card-name">Michael McKennedy 🤝</div><div class="card-title">Senior Manager of Product Management</div></div><div class="card-right"><button class="note-btn">📝</button><div class="pendo-tags"><span class="ptag pt-analytics">Analytics</span><span class="ptag pt-roadmaps">Roadmaps</span></div></div></div>
+      <div class="notes-row"><textarea placeholder="Conversation notes…" rows="3"></textarea><div class="note-actions"><button class="btn-save" onclick="saveNote(this)">Save</button><button class="btn-cancel" onclick="closeNote(this)">Cancel</button><span class="saved-msg">✓ Saved</span></div></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- COX COMMUNICATIONS -->
+<div class="company-group" data-group="cox-comm">
+  <div class="co-header">
+    <div class="co-dot d-coxcomm"></div>
+    <span class="co-name">Cox Communications</span>
+    <span class="co-count">9</span>
+  </div>
+  <div>
+
+    <div class="attendee-card" data-company="cox-comm" data-search="matt leis product director cox communications">
+      <div class="card-main"><div class="av c-coxcomm">ML</div><div class="card-info"><div class="card-name">Matt Leis ✨</div><div class="card-title">Product Director</div></div><div class="card-right"><button class="note-btn">📝</button><div class="pendo-tags"><span class="ptag pt-analytics">Analytics</span><span class="ptag pt-roadmaps">Roadmaps</span></div></div></div>
+      <div class="notes-row"><textarea placeholder="Conversation notes…" rows="3"></textarea><div class="note-actions"><button class="btn-save" onclick="saveNote(this)">Save</button><button class="btn-cancel" onclick="closeNote(this)">Cancel</button><span class="saved-msg">✓ Saved</span></div></div>
+    </div>
+
+    <div class="attendee-card" data-company="cox-comm" data-search="gavin george senior director product management cox communications">
+      <div class="card-main"><div class="av c-coxcomm">GG</div><div class="card-info"><div class="card-name">Gavin George 🤝</div><div class="card-title">Senior Director, Product Management</div></div><div class="card-right"><button class="note-btn">📝</button><div class="pendo-tags"><span class="ptag pt-analytics">Analytics</span><span class="ptag pt-roadmaps">Roadmaps</span><span class="ptag pt-listen">Listen</span></div></div></div>
+      <div class="notes-row"><textarea placeholder="Conversation notes…" rows="3"></textarea><div class="note-actions"><button class="btn-save" onclick="saveNote(this)">Save</button><button class="btn-cancel" onclick="closeNote(this)">Cancel</button><span class="saved-msg">✓ Saved</span></div></div>
+    </div>
+
+    <div class="attendee-card" data-company="cox-comm" data-search="diana tedrow learning development director cox communications">
+      <div class="card-main"><div class="av c-coxcomm">DT</div><div class="card-info"><div class="card-name">Diana Tedrow 🤝</div><div class="card-title">Learning & Development Director</div></div><div class="card-right"><button class="note-btn">📝</button><div class="pendo-tags"><span class="ptag pt-guides">Guides</span><span class="ptag pt-analytics">Analytics</span></div></div></div>
+      <div class="notes-row"><textarea placeholder="Conversation notes…" rows="3"></textarea><div class="note-actions"><button class="btn-save" onclick="saveNote(this)">Save</button><button class="btn-cancel" onclick="closeNote(this)">Cancel</button><span class="saved-msg">✓ Saved</span></div></div>
+    </div>
+
+    <div class="attendee-card" data-company="cox-comm" data-search="cameron farrell sr product manager cox communications">
+      <div class="card-main"><div class="av c-coxcomm">CF</div><div class="card-info"><div class="card-name">Cameron Farrell 🤝</div><div class="card-title">Sr. Product Manager</div></div><div class="card-right"><button class="note-btn">📝</button><div class="pendo-tags"><span class="ptag pt-analytics">Analytics</span><span class="ptag pt-guides">Guides</span></div></div></div>
+      <div class="notes-row"><textarea placeholder="Conversation notes…" rows="3"></textarea><div class="note-actions"><button class="btn-save" onclick="saveNote(this)">Save</button><button class="btn-cancel" onclick="closeNote(this)">Cancel</button><span class="saved-msg">✓ Saved</span></div></div>
+    </div>
+
+    <div class="attendee-card" data-company="cox-comm" data-search="samuel patterson lead product manager cox communications">
+      <div class="card-main"><div class="av c-coxcomm">SP</div><div class="card-info"><div class="card-name">Samuel Patterson ✨</div><div class="card-title">Sr. Lead Product Manager</div></div><div class="card-right"><button class="note-btn">📝</button><div class="pendo-tags"><span class="ptag pt-analytics">Analytics</span></div></div></div>
+      <div class="notes-row"><textarea placeholder="Conversation notes…" rows="3"></textarea><div class="note-actions"><button class="btn-save" onclick="saveNote(this)">Save</button><button class="btn-cancel" onclick="closeNote(this)">Cancel</button><span class="saved-msg">✓ Saved</span></div></div>
+    </div>
+
+    <div class="attendee-card" data-company="cox-comm" data-search="christopher blackmonson sr product manager cox communications">
+      <div class="card-main"><div class="av c-coxcomm">CB</div><div class="card-info"><div class="card-name">Christopher Blackmonson ✨</div><div class="card-title">Sr. Product Manager</div></div><div class="card-right"><button class="note-btn">📝</button><div class="pendo-tags"><span class="ptag pt-analytics">Analytics</span><span class="ptag pt-guides">Guides</span></div></div></div>
+      <div class="notes-row"><textarea placeholder="Conversation notes…" rows="3"></textarea><div class="note-actions"><button class="btn-save" onclick="saveNote(this)">Save</button><button class="btn-cancel" onclick="closeNote(this)">Cancel</button><span class="saved-msg">✓ Saved</span></div></div>
+    </div>
+
+    <div class="attendee-card" data-company="cox-comm" data-search="gari settles sr product manager cox communications">
+      <div class="card-main"><div class="av c-coxcomm">GS</div><div class="card-info"><div class="card-name">Gari Settles ✨</div><div class="card-title">Sr. Product Manager</div></div><div class="card-right"><button class="note-btn">📝</button><div class="pendo-tags"><span class="ptag pt-analytics">Analytics</span></div></div></div>
+      <div class="notes-row"><textarea placeholder="Conversation notes…" rows="3"></textarea><div class="note-actions"><button class="btn-save" onclick="saveNote(this)">Save</button><button class="btn-cancel" onclick="closeNote(this)">Cancel</button><span class="saved-msg">✓ Saved</span></div></div>
+    </div>
+
+    <div class="attendee-card" data-company="cox-comm" data-search="allana david salesforce business analysis cox communications">
+      <div class="card-main"><div class="av c-coxcomm">AD</div><div class="card-info"><div class="card-name">Allana David ✨</div><div class="card-title">Manager, Salesforce Business Analysis</div></div><div class="card-right"><button class="note-btn">📝</button><div class="pendo-tags"><span class="ptag pt-analytics">Analytics</span></div></div></div>
+      <div class="notes-row"><textarea placeholder="Conversation notes…" rows="3"></textarea><div class="note-actions"><button class="btn-save" onclick="saveNote(this)">Save</button><button class="btn-cancel" onclick="closeNote(this)">Cancel</button><span class="saved-msg">✓ Saved</span></div></div>
+    </div>
+
+    <div class="attendee-card" data-company="cox-comm" data-search="robert sekman senior product manager cox communications">
+      <div class="card-main"><div class="av c-coxcomm">RS</div><div class="card-info"><div class="card-name">Robert Sekman ✨</div><div class="card-title">Senior Product Manager</div></div><div class="card-right"><button class="note-btn">📝</button><div class="pendo-tags"><span class="ptag pt-analytics">Analytics</span><span class="ptag pt-guides">Guides</span></div></div></div>
+      <div class="notes-row"><textarea placeholder="Conversation notes…" rows="3"></textarea><div class="note-actions"><button class="btn-save" onclick="saveNote(this)">Save</button><button class="btn-cancel" onclick="closeNote(this)">Cancel</button><span class="saved-msg">✓ Saved</span></div></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- FIDELITY -->
+<div class="company-group" data-group="fidelity">
+  <div class="co-header">
+    <div class="co-dot d-fidelity"></div>
+    <span class="co-name">Fidelity Investments</span>
+    <span class="co-count">5</span>
+  </div>
+  <div>
+
+    <div class="attendee-card" data-company="fidelity" data-search="abbey allen business analyst fidelity">
+      <div class="card-main"><div class="av c-fidelity">AA</div><div class="card-info"><div class="card-name">Abbey Allen 🤝</div><div class="card-title">Business Analyst</div></div><div class="card-right"><button class="note-btn">📝</button><div class="pendo-tags"><span class="ptag pt-analytics">Analytics</span></div></div></div>
+      <div class="notes-row"><textarea placeholder="Conversation notes…" rows="3"></textarea><div class="note-actions"><button class="btn-save" onclick="saveNote(this)">Save</button><button class="btn-cancel" onclick="closeNote(this)">Cancel</button><span class="saved-msg">✓ Saved</span></div></div>
+    </div>
+
+    <div class="attendee-card" data-company="fidelity" data-search="joe given systems analyst fidelity">
+      <div class="card-main"><div class="av c-fidelity">JG</div><div class="card-info"><div class="card-name">Joe Given 🤝</div><div class="card-title">Systems Analyst</div></div><div class="card-right"><button class="note-btn">📝</button><div class="pendo-tags"><span class="ptag pt-analytics">Analytics</span></div></div></div>
+      <div class="notes-row"><textarea placeholder="Conversation notes…" rows="3"></textarea><div class="note-actions"><button class="btn-save" onclick="saveNote(this)">Save</button><button class="btn-cancel" onclick="closeNote(this)">Cancel</button><span class="saved-msg">✓ Saved</span></div></div>
+    </div>
+
+    <div class="attendee-card" data-company="fidelity" data-search="nancy atkins analyst fidelity">
+      <div class="card-main"><div class="av c-fidelity">NA</div><div class="card-info"><div class="card-name">Nancy Atkins ✨</div><div class="card-title">Analyst</div></div><div class="card-right"><button class="note-btn">📝</button><div class="pendo-tags"><span class="ptag pt-analytics">Analytics</span></div></div></div>
+      <div class="notes-row"><textarea placeholder="Conversation notes…" rows="3"></textarea><div class="note-actions"><button class="btn-save" onclick="saveNote(this)">Save</button><button class="btn-cancel" onclick="closeNote(this)">Cancel</button><span class="saved-msg">✓ Saved</span></div></div>
+    </div>
+
+    <div class="attendee-card" data-company="fidelity" data-search="sara veillette ux researcher fidelity">
+      <div class="card-main"><div class="av c-fidelity">SV</div><div class="card-info"><div class="card-name">Sara Veillette 🤝</div><div class="card-title">Program Manager</div></div><div class="card-right"><button class="note-btn">📝</button><div class="pendo-tags"><span class="ptag pt-listen">Listen</span><span class="ptag pt-analytics">Analytics</span></div></div></div>
+      <div class="notes-row"><textarea placeholder="Conversation notes…" rows="3"></textarea><div class="note-actions"><button class="btn-save" onclick="saveNote(this)">Save</button><button class="btn-cancel" onclick="closeNote(this)">Cancel</button><span class="saved-msg">✓ Saved</span></div></div>
+    </div>
+
+    <div class="attendee-card" data-company="fidelity" data-search="seth gleeso manager client education fidelity">
+      <div class="card-main"><div class="av c-fidelity">SG</div><div class="card-info"><div class="card-name">Seth Gleeso ✨</div><div class="card-title">Sr. Manager, Client Education</div></div><div class="card-right"><button class="note-btn">📝</button><div class="pendo-tags"><span class="ptag pt-guides">Guides</span><span class="ptag pt-analytics">Analytics</span></div></div></div>
+      <div class="notes-row"><textarea placeholder="Conversation notes…" rows="3"></textarea><div class="note-actions"><button class="btn-save" onclick="saveNote(this)">Save</button><button class="btn-cancel" onclick="closeNote(this)">Cancel</button><span class="saved-msg">✓ Saved</span></div></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- SLACK SECTION -->
+<div class="slack-sec">
+  <div class="sec-label">📤 Send Notes to Slack</div>
+
+  <div class="slack-row" data-company="sapphire" data-channel="C03KJ3U1TDE" data-label="Sapphire Digital / Zelis">
+    <div class="slack-top"><div><div class="slack-co">Sapphire Digital / Zelis</div><div class="slack-ch">#client-zelis-ie</div></div><div class="slack-count" id="scount-sapphire">—</div></div>
+    <div class="slack-bottom"><div style="flex:1"></div><button class="btn-slack" onclick="sendSlack(this)" disabled>Send to Slack</button></div>
+    <div class="slack-log" id="slog-sapphire"></div>
+  </div>
+
+  <div class="slack-row" data-company="mcgraw" data-channel="C02MF6YRNS3" data-label="McGraw Hill LLC">
+    <div class="slack-top"><div><div class="slack-co">McGraw Hill LLC</div><div class="slack-ch">#client-mcgraw-hill-education-yellow</div></div><div class="slack-count" id="scount-mcgraw">—</div></div>
+    <div class="slack-bottom"><div style="flex:1"></div><button class="btn-slack" onclick="sendSlack(this)" disabled>Send to Slack</button></div>
+    <div class="slack-log" id="slog-mcgraw"></div>
+  </div>
+
+  <div class="slack-row" data-company="cox-auto" data-channel="C05DEC9K2FQ" data-label="Cox Automotive">
+    <div class="slack-top"><div><div class="slack-co">Cox Automotive</div><div class="slack-ch">#client-cox-automotive-2024</div></div><div class="slack-count" id="scount-cox-auto">—</div></div>
+    <div class="slack-bottom"><div style="flex:1"></div><button class="btn-slack" onclick="sendSlack(this)" disabled>Send to Slack</button></div>
+    <div class="slack-log" id="slog-cox-auto"></div>
+  </div>
+
+  <div class="slack-row" data-company="cox-comm" data-channel="C0786230FDZ" data-label="Cox Communications">
+    <div class="slack-top"><div><div class="slack-co">Cox Communications</div><div class="slack-ch">#client-cox-comm</div></div><div class="slack-count" id="scount-cox-comm">—</div></div>
+    <div class="slack-bottom"><div style="flex:1"></div><button class="btn-slack" onclick="sendSlack(this)" disabled>Send to Slack</button></div>
+    <div class="slack-log" id="slog-cox-comm"></div>
+  </div>
+
+  <div class="slack-row" data-company="fidelity" data-channel="CPTPDB475" data-label="Fidelity Investments">
+    <div class="slack-top"><div><div class="slack-co">Fidelity Investments</div><div class="slack-ch">#client-fidelity-green</div></div><div class="slack-count" id="scount-fidelity">—</div></div>
+    <div class="slack-bottom"><div style="flex:1"></div><button class="btn-slack" onclick="sendSlack(this)" disabled>Send to Slack</button></div>
+    <div class="slack-log" id="slog-fidelity"></div>
+  </div>
+
+</div>
+</div><!-- /page -->
+
+<script>
+// ── Storage — Google Apps Script backend ─────────────────────────
+// Replace these two values after deploying your Apps Script
+const APPS_SCRIPT_URL = 'https://script.google.com/a/macros/pendo.io/s/AKfycby-El_5rYq1c1oMKNVksHAWSvBZ3QJBpmaNoUVvDPSwy2SY1dFW1INHEgtv9DlqMLy-qw/exec';
+const SECRET_KEY      = 'testing-new-secret-key';
+
+const NC = {}; // notes cache  — in-memory, loaded from Drive on init
+let backendReady = false;
+
+// Check if backend is configured
+function hasBackend() {
+  return APPS_SCRIPT_URL !== 'PASTE_YOUR_APPS_SCRIPT_URL_HERE' && SECRET_KEY !== 'REPLACE_WITH_YOUR_OWN_SECRET';
+}
+
+async function loadAllNotes() {
+  if (!hasBackend()) {
+    // localStorage fallback while backend not yet configured
+    try {
+      for (let i = 0; i < localStorage.length; i++) {
+        const k = localStorage.key(i);
+        if (k && k.startsWith('pndm:note:')) {
+          NC[k.replace('pndm:note:', '')] = localStorage.getItem(k);
+        }
+      }
+    } catch {}
+    return;
+  }
+  try {
+    const res = await fetch(`${APPS_SCRIPT_URL}?key=${encodeURIComponent(SECRET_KEY)}`);
+    const data = await res.json();
+    if (data.notes) {
+      Object.assign(NC, data.notes);
+      backendReady = true;
+    }
+  } catch (e) {
+    console.warn('Backend load failed, using localStorage:', e);
+    // localStorage fallback
+    try {
+      for (let i = 0; i < localStorage.length; i++) {
+        const k = localStorage.key(i);
+        if (k && k.startsWith('pndm:note:')) {
+          NC[k.replace('pndm:note:', '')] = localStorage.getItem(k);
+        }
+      }
+    } catch {}
+  }
+}
+
+async function storeNote(key, text) {
+  NC[key] = text;
+  if (hasBackend()) {
+    try {
+      await fetch(APPS_SCRIPT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify({ key: SECRET_KEY, noteKey: key, note: text })
+      });
+      return true;
+    } catch (e) {
+      console.warn('Backend save failed, saving to localStorage:', e);
+    }
+  }
+  // localStorage fallback
+  try {
+    text.trim()
+      ? localStorage.setItem('pndm:note:'+key, text)
+      : localStorage.removeItem('pndm:note:'+key);
+    return true;
+  } catch { return false; }
+}
+
+// ── Key from card ────────────────────────────────────────────────
+function getKey(card) {
+  const n = card.querySelector('.card-name');
+  if (!n) return null;
+  return n.childNodes[0].textContent.trim().toLowerCase().replace(/\s+/g,'-');
+}
+
+// ── Wire up note buttons ─────────────────────────────────────────
+function wireCards() {
+  document.querySelectorAll('.attendee-card').forEach(card => {
+    if (card.dataset.wired) return;
+    card.dataset.wired = '1';
+    const key = getKey(card);
+    if (!key) return;
+    card.dataset.noteKey = key;
+    const btn = card.querySelector('.note-btn');
+    if (btn) btn.onclick = () => openNoteEditor(card, key);
+    refreshPreview(card, key);
+  });
+}
+
+function openNoteEditor(card, key) {
+  // Close any open editors first
+  document.querySelectorAll('.notes-row.open').forEach(r => r.classList.remove('open'));
+  const row = card.querySelector('.notes-row');
+  if (!row) return;
+  row.classList.add('open');
+  const ta = row.querySelector('textarea');
+  ta.value = NC[key] || '';
+  ta.style.height = 'auto';
+  ta.style.height = Math.max(80, ta.scrollHeight) + 'px';
+  // Scroll card into view with offset for sticky header
+  setTimeout(() => {
+    const top = card.getBoundingClientRect().top + window.scrollY - 140;
+    window.scrollTo({ top, behavior: 'smooth' });
+    ta.focus();
+  }, 50);
+  // Flash border
+  card.style.borderColor = 'var(--pink)';
+  setTimeout(() => { card.style.borderColor = ''; }, 1200);
+}
+
+async function saveNote(btn) {
+  btn.disabled = true;
+  const row = btn.closest('.notes-row');
+  const card = btn.closest('.attendee-card');
+  const key = card?.dataset.noteKey;
+  const ta = row.querySelector('textarea');
+  const msg = row.querySelector('.saved-msg');
+  const ok = await storeNote(key, ta.value);
+  btn.disabled = false;
+  if (ok) {
+    msg.classList.add('show');
+    setTimeout(() => { msg.classList.remove('show'); row.classList.remove('open'); refreshPreview(card, key); refreshSlackCounts(); }, 900);
+  }
+}
+
+function closeNote(btn) {
+  btn.closest('.notes-row').classList.remove('open');
+}
+
+function refreshPreview(card, key) {
+  card.querySelector('.note-preview')?.remove();
+  const note = NC[key] || '';
+  const btn = card.querySelector('.note-btn');
+  if (note) {
+    btn?.classList.add('has-note');
+    const p = document.createElement('div');
+    p.className = 'note-preview';
+    p.textContent = '📋 ' + note.split('\n')[0].slice(0,100) + (note.length > 100 ? '…' : '');
+    p.onclick = () => openNoteEditor(card, key);
+    card.insertBefore(p, card.querySelector('.notes-row'));
+  } else {
+    btn?.classList.remove('has-note');
+  }
+}
+
+// ── Quick-find ───────────────────────────────────────────────────
+let IDX = [], QFI = [], qfCursor = -1;
+
+function buildIndex() {
+  IDX = [];
+  document.querySelectorAll('.attendee-card').forEach(card => {
+    const n = card.querySelector('.card-name');
+    const t = card.querySelector('.card-title');
+    if (!n) return;
+    const name = n.childNodes[0].textContent.trim();
+    const title = t ? t.textContent.trim() : '';
+    const co = card.dataset.company || '';
+    const key = name.toLowerCase().replace(/\s+/g,'-');
+    const av = card.querySelector('.av');
+    const avClass = av ? av.className : '';
+    const initials = name.split(' ').map(p=>p[0]).join('').slice(0,2).toUpperCase();
+    IDX.push({ name, title, co, key, card, avClass, initials });
+  });
+}
+
+function onQF(q) {
+  const dd = document.getElementById('qfDrop');
+  q = q.trim().toLowerCase();
+  QFI = q.length === 0
+    ? IDX.filter(a => NC[a.key])
+    : IDX.filter(a => a.name.toLowerCase().includes(q) || a.title.toLowerCase().includes(q));
+  qfCursor = -1;
+  if (!QFI.length && q.length > 0) {
+    dd.innerHTML = `<div class="qf-empty">No match for "${q}"</div>`;
+    dd.classList.add('open'); return;
+  }
+  if (!QFI.length) { dd.classList.remove('open'); return; }
+  dd.innerHTML = QFI.slice(0,8).map((a,i) => `
+    <div class="qf-item" onclick="pickQF(${i})">
+      <div class="qf-av ${a.avClass}">${a.initials}</div>
+      <div class="qf-info">
+        <div class="qf-name">${a.name}</div>
+        <div class="qf-sub">${a.title}</div>
+      </div>
+      ${NC[a.key] ? '<span class="qf-has-note">📋</span>' : ''}
+    </div>`).join('');
+  dd.classList.add('open');
+}
+
+function pickQF(i) {
+  const a = QFI[i]; if (!a) return;
+  document.getElementById('qfDrop').classList.remove('open');
+  document.getElementById('qfInput').value = '';
+  // Show card's group if filtered
+  a.card.classList.remove('hidden');
+  const g = a.card.closest('.company-group'); if (g) g.style.display='';
+  openNoteEditor(a.card, a.key);
+}
+
+function onQFKey(e) {
+  const dd = document.getElementById('qfDrop');
+  if (!dd.classList.contains('open')) return;
+  const items = dd.querySelectorAll('.qf-item');
+  if (e.key==='ArrowDown') { e.preventDefault(); qfCursor=Math.min(qfCursor+1,items.length-1); }
+  else if (e.key==='ArrowUp') { e.preventDefault(); qfCursor=Math.max(qfCursor-1,0); }
+  else if (e.key==='Enter' && qfCursor>=0) { e.preventDefault(); pickQF(qfCursor); return; }
+  else if (e.key==='Escape') { dd.classList.remove('open'); document.getElementById('qfInput').value=''; return; }
+  items.forEach((el,idx) => el.classList.toggle('focused', idx===qfCursor));
+}
+
+document.addEventListener('click', e => { if (!e.target.closest('#qfWrap')) document.getElementById('qfDrop').classList.remove('open'); });
+
+// ── Company filter ───────────────────────────────────────────────
+function filterCo(co, btn) {
+  document.querySelectorAll('.fpill').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.attendee-card').forEach(c => {
+    c.classList.toggle('hidden', co!=='all' && c.dataset.company!==co);
+  });
+  document.querySelectorAll('.company-group').forEach(g => {
+    const match = co==='all' || g.dataset.group===co;
+    const vis = g.querySelectorAll('.attendee-card:not(.hidden)').length > 0;
+    g.style.display = (match && vis) ? '' : 'none';
+  });
+}
+
+// ── Slack counts ─────────────────────────────────────────────────
+function refreshSlackCounts() {
+  ['sapphire','mcgraw','cox-auto','cox-comm','fidelity'].forEach(co => {
+    let n = 0;
+    document.querySelectorAll(`.attendee-card[data-company="${co}"]`).forEach(card => {
+      const k = card.dataset.noteKey; if (k && NC[k]?.trim()) n++;
+    });
+    const el = document.getElementById('scount-'+co);
+    const btn = document.querySelector(`.slack-row[data-company="${co}"] .btn-slack`);
+    if (el) { el.textContent = n ? n+' note'+(n>1?'s':'') : 'no notes'; el.className = 'slack-count'+(n?' has':''); }
+    if (btn) btn.disabled = !n;
+  });
+}
+
+// ── Send to Slack ────────────────────────────────────────────────
+async function sendSlack(btn) {
+  const row = btn.closest('.slack-row');
+  const co = row.dataset.company, cid = row.dataset.channel, label = row.dataset.label;
+  const toPost = [];
+  document.querySelectorAll(`.attendee-card[data-company="${co}"]`).forEach(card => {
+    const key = card.dataset.noteKey;
+    const note = key && NC[key] ? NC[key].trim() : '';
+    if (!note) return;
+    const nameEl = card.querySelector('.card-name');
+    const titleEl = card.querySelector('.card-title');
+    const name = nameEl ? nameEl.childNodes[0].textContent.trim() : '';
+    const title = titleEl ? titleEl.textContent.trim() : '';
+    toPost.push({ name, title, note });
+  });
+  if (!toPost.length) return;
+
+  btn.disabled = true;
+  btn.textContent = 'Sending…';
+  const log = document.getElementById('slog-'+co);
+  log.innerHTML = '';
+  log.classList.add('open');
+
+  const addLine = (txt, cls) => {
+    const d = document.createElement('div');
+    d.className = 'log-line ' + cls;
+    d.textContent = txt;
+    log.appendChild(d);
+    return d;
+  };
+
+  const tl = addLine('⏳ Creating thread…','');
+
+  try {
+    const opening = `*${label} — Pendomonium 2026 Notes*\n_${toPost.length} attendee${toPost.length>1?'s':''} with notes · March 24–26, 2026 · Raleigh, NC_`;
+    const replies = toPost.map((p,i) => `REPLY ${i+1}:\n*${p.name}* — _${p.title}_\n\n${p.note}`);
+    const prompt = `You are a Slack posting assistant. Do the following in order with no commentary:\n1. Post this to channel ID "${cid}":\n${opening}\n\n2. Get the thread_ts and post each reply in that thread:\n\n${replies.join('\n\n---\n\n')}\n\nReturn ONLY JSON: {"success":true,"replies_posted":${toPost.length}} or {"success":false,"error":"..."}`;
+
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        mcp_servers: [{ type:'url', url:'https://mcp.slack.com/mcp', name:'slack' }],
+        messages: [{ role:'user', content: prompt }]
+      })
+    });
+    const data = await res.json();
+    const txt = data.content?.find(b=>b.type==='text')?.text || '{}';
+    let result;
+    try { result = JSON.parse(txt.replace(/```json|```/g,'').trim()); } catch { result = {success:false,error:'Parse error'}; }
+
+    if (result.success) {
+      tl.className = 'log-line done'; tl.textContent = '✓ Thread created';
+      toPost.forEach(p => addLine('✓ '+p.name, 'done'));
+      btn.textContent = '✓ Sent!';
+      btn.classList.add('sent');
+    } else { throw new Error(result.error||'Unknown'); }
+  } catch (err) {
+    tl.className = 'log-line error'; tl.textContent = '✗ '+err.message;
+    btn.disabled = false; btn.textContent = 'Retry';
+  }
+}
+
+// ── Init ─────────────────────────────────────────────────────────
+async function init() {
+  await loadAllNotes();
+  wireCards();
+  buildIndex();
+  refreshSlackCounts();
+}
+
+document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>
