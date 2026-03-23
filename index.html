@@ -1101,20 +1101,28 @@ header {
 
 <script>
 // ── Storage — Google Apps Script backend ─────────────────────────
-// Replace these two values after deploying your Apps Script
-const APPS_SCRIPT_URL = 'https://script.google.com/a/macros/pendo.io/s/AKfycbytzcgspaLGaSu4jSK_p5_E75aiv72CUmWSEhAwoQQ8DwRi8YWV-LYZKuwXZ_yJOJK13w/exec';
-const SECRET_KEY      = 'REPLACE_WITH_YOUR_OWN_SECRET';
+// Paste your deployed Apps Script URL and secret key here
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxq1yxjZtkTBo3n27NwlM1n5-mnAE1gKDrOZamGsgsaXKCqK8g0rFEMdVcN52ZD72BnqA/exec';
+const SECRET_KEY      = 'millie is the best dog';
 
-const NC = {}; // notes cache  — in-memory, loaded from Drive on init
+const NC = {};       // in-memory notes cache
 let backendReady = false;
 
-// Check if backend is configured
 function hasBackend() {
-  return APPS_SCRIPT_URL !== 'PASTE_YOUR_APPS_SCRIPT_URL_HERE' && SECRET_KEY !== 'REPLACE_WITH_YOUR_OWN_SECRET';
+  return APPS_SCRIPT_URL !== 'PASTE_YOUR_APPS_SCRIPT_URL_HERE'
+      && SECRET_KEY      !== 'REPLACE_WITH_YOUR_OWN_SECRET';
+}
+
+// Build a GET URL for the Apps Script
+function scriptURL(params) {
+  const base = APPS_SCRIPT_URL + '?key=' + encodeURIComponent(SECRET_KEY);
+  return base + Object.entries(params)
+    .map(([k,v]) => '&' + encodeURIComponent(k) + '=' + encodeURIComponent(v))
+    .join('');
 }
 
 async function loadAllNotes() {
-  // Always load from localStorage first as instant cache
+  // Seed from localStorage instantly so UI is never blank
   try {
     for (let i = 0; i < localStorage.length; i++) {
       const k = localStorage.key(i);
@@ -1126,48 +1134,40 @@ async function loadAllNotes() {
 
   if (!hasBackend()) return;
 
-  // Then sync from Google Sheet (source of truth)
   try {
-    // Google Apps Script requires a redirect follow — use this pattern
-    const url = APPS_SCRIPT_URL + '?key=' + encodeURIComponent(SECRET_KEY);
-    const res = await fetch(url, { redirect: 'follow' });
+    // Pure GET — no preflight, no CORS issue
+    const res  = await fetch(scriptURL({ action: 'load' }));
     const data = await res.json();
     if (data.notes) {
-      // Sheet wins — merge into cache and localStorage
-      Object.keys(data.notes).forEach(k => {
-        NC[k] = data.notes[k];
-        try { localStorage.setItem('pndm:note:'+k, data.notes[k]); } catch {}
+      // Sheet is source of truth — overwrite local cache
+      Object.entries(data.notes).forEach(([k, v]) => {
+        NC[k] = v;
+        try { localStorage.setItem('pndm:note:'+k, v); } catch {}
       });
       backendReady = true;
     }
   } catch (e) {
-    console.warn('Sheet sync failed, using localStorage cache:', e);
+    console.warn('Sheet load failed, using localStorage:', e);
   }
 }
 
 async function storeNote(key, text) {
-  // 1. Update in-memory cache immediately
+  // 1. Update cache + localStorage immediately (instant feedback)
   NC[key] = text;
-
-  // 2. Save to localStorage immediately (instant, no network)
   try {
     text.trim()
       ? localStorage.setItem('pndm:note:'+key, text)
       : localStorage.removeItem('pndm:note:'+key);
   } catch {}
 
-  // 3. Sync to Google Sheet in background (no-cors = fire and forget)
+  // 2. Persist to Google Sheet via GET (no CORS issues)
   if (hasBackend()) {
     try {
-      // Google Apps Script CORS workaround: use no-cors mode
-      // The request goes through but we can't read the response — that's fine
-      fetch(APPS_SCRIPT_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        body: JSON.stringify({ key: SECRET_KEY, noteKey: key, note: text })
-      });
+      const res  = await fetch(scriptURL({ action: 'save', noteKey: key, note: text }));
+      const data = await res.json();
+      if (!data.success) console.warn('Sheet save returned:', data);
     } catch (e) {
-      console.warn('Sheet sync failed (note saved locally):', e);
+      console.warn('Sheet save failed (saved locally):', e);
     }
   }
 
